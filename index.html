@@ -26,84 +26,115 @@
       font-family: 'Inter', -apple-system, "SF Pro Text", "SF Pro Display", "Segoe UI", Roboto, Arial, sans-serif;
       background:var(--bg);
       color:var(--text);
-      padding:28px 20px;
+      padding:20px 16px;
       -webkit-font-smoothing:antialiased;
       -moz-osx-font-smoothing:grayscale;
     }
 
-    .wrap{max-width:980px;margin:0 auto}
-    header{display:flex;gap:14px;align-items:center;padding:18px 12px;border-radius:calc(var(--radius) + 2px);background: linear-gradient(180deg, rgba(255,255,255,0.06), rgba(255,255,255,0.03));backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,0.03)}
-    .logo-icon{width:68px;height:68px;border-radius:20px;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,var(--accent),#5ac8fa);color:white;box-shadow:0 10px 30px rgba(10,132,255,0.14);font-size:24px;backdrop-filter:blur(6px);} 
-    header h1{font-size:20px;margin:0;font-weight:700;letter-spacing:-0.02em;font-family:'Inter', -apple-system, "SF Pro Text", "SF Pro Display", "Segoe UI", Roboto, Arial, sans-serif;} header small{display:block;color:var(--muted);font-size:13px;font-weight:400;}
+    .wrap{max-width:1100px;margin:0 auto}
+    header{display:flex;gap:14px;align-items:center;padding:14px;border-radius:calc(var(--radius) + 2px);background: linear-gradient(180deg, rgba(255,255,255,0.06), rgba(255,255,255,0.03));backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,0.03)}
+    .logo-icon{width:60px;height:60px;border-radius:16px;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,var(--accent),#5ac8fa);color:white;box-shadow:0 10px 30px rgba(10,132,255,0.14);font-size:22px;backdrop-filter:blur(6px);} 
+    header h1{font-size:18px;margin:0;font-weight:700;letter-spacing:-0.02em;} header small{display:block;color:var(--muted);font-size:13px;font-weight:400;}
 
     .grid{display:grid;gap:18px;grid-template-columns:1fr}
-    @media(min-width:1000px){.grid{grid-template-columns:1fr 440px}}
+    @media(min-width:1000px){.grid{grid-template-columns:1fr 460px}}
 
     .card{
       background: linear-gradient(180deg, rgba(255,255,255,0.06), rgba(255,255,255,0.03));
-      border-radius:28px;
-      padding:20px;
+      border-radius:20px;
+      padding:16px;
       border:1px solid rgba(255,255,255,0.12);
-      backdrop-filter: blur(22px) saturate(150%);
-      -webkit-backdrop-filter: blur(22px) saturate(150%);
+      backdrop-filter: blur(18px) saturate(140%);
       box-shadow: 0 12px 40px rgba(2,6,23,0.55), inset 0 1px 0 rgba(255,255,255,0.03);
     }
 
-    label{display:block;color:var(--muted);font-size:13px;margin-bottom:8px}
+    label{display:block;color:var(--muted);font-size:13px;margin-bottom:6px}
     .required:after{content:" *";color:var(--accent)}
     input,select,textarea{
       width:100%;
-      padding:12px 14px;
-      border-radius:12px;
+      padding:10px 12px;
+      border-radius:10px;
       border:1px solid rgba(255,255,255,0.03);
-      background: rgba(255,255,255,0.025);
+      background: rgba(255,255,255,0.02);
       color:var(--text);
       outline:none;
       font-size:15px;
     }
     input::placeholder, textarea::placeholder { color: rgba(255,255,255,0.35); }
-    textarea{min-height:110px}
-    .row{display:grid;gap:12px}
+    textarea{min-height:100px}
+
+    /* responsive rows */
+    .row{display:grid;gap:12px;margin-bottom:6px}
     @media(min-width:640px){.row-2{grid-template-columns:1fr 1fr}.row-3{grid-template-columns:1fr 1fr 1fr}}
+
     .file-input-container{position:relative}
     .file-input-container input[type="file"]{position:absolute;inset:0;opacity:0;cursor:pointer}
     .file-input-label{display:flex;align-items:center;gap:10px;padding:10px;border-radius:12px;border:1px dashed rgba(255,255,255,0.03);color:var(--muted)}
+
+    /* buttons */
     .actions{display:flex;gap:10px;flex-wrap:wrap}
     button{padding:10px 14px;border-radius:12px;border:none;font-weight:700;cursor:pointer}
-    button.primary{background:linear-gradient(180deg,var(--accent),#076fe0);color:white}
+    button.primary{background:linear-gradient(180deg,var(--accent),#076fe0);color:white;min-height:44px;display:inline-flex;align-items:center;justify-content:center}
     button.ghost{background:transparent;color:var(--accent);border:1px solid rgba(10,132,255,0.08)}
     button.flat{background:transparent;color:var(--muted)}
+
+    /* make action buttons stack on small screens and be touch-friendly */
+    @media(max-width:640px){
+      .actions{flex-direction:column}
+      .actions button{width:100%}
+      #openAIButton{width:100%;display:block}
+    }
 
     /* preview (white) */
     .recibo{
       background: #ffffff;
       color: #0b1220;
-      padding:22px;
-      border-radius:16px;
+      padding:18px;
+      border-radius:12px;
       border:1px solid rgba(0,0,0,0.06);
       box-shadow: 0 8px 30px rgba(2,6,23,0.08);
-      backdrop-filter: none;
-      -webkit-backdrop-filter: none;
     }
-    .body{margin-top:14px}
-    .line{display:flex;gap:12px;align-items:flex-start;padding:8px 0;border-bottom:1px dashed rgba(0,0,0,0.04)}
-    .line label{width:160px;color:#6b7280}
+    .body{margin-top:12px}
+    .line{display:flex;gap:12px;align-items:flex-start;padding:6px 0;border-bottom:1px dashed rgba(0,0,0,0.04)}
+    .line label{width:150px;color:#6b7280;font-weight:600}
     .val{flex:1}
-    .desc{margin-top:10px;padding:12px;border-radius:10px;background:#fbfbfc;color:#64748b;font-size:13px;border:1px solid rgba(0,0,0,0.03)}
-    .footer{display:flex;justify-content:space-between;align-items:center;margin-top:18px}
-    .assin .trace{width:240px;border-top:1px solid rgba(0,0,0,0.06);height:0;margin-top:36px}
+    .desc{margin-top:10px;padding:10px;border-radius:8px;background:#fbfbfc;color:#64748b;font-size:13px;border:1px solid rgba(0,0,0,0.03)}
+    .footer{display:flex;justify-content:space-between;align-items:center;margin-top:14px}
+    .assin .trace{width:220px;border-top:1px solid rgba(0,0,0,0.06);height:0;margin-top:28px}
+
+    /* responsive recibo lines */
+    @media(max-width:720px){
+      .line{flex-direction:column;align-items:flex-start;padding:8px 0}
+      .line label{width:auto;margin-bottom:6px}
+      .footer{flex-direction:column;gap:12px;align-items:flex-start}
+    }
+
     .toast{position:fixed;right:20px;bottom:20px;background:var(--card);padding:12px;border-radius:12px;border:1px solid var(--border);display:flex;gap:12px;color:var(--text);opacity:0;transform:translateY(12px);transition:all .28s}
     .toast.show{opacity:1;transform:translateY(0)}
     @media print{body *{visibility:hidden}.recibo,.recibo *{visibility:visible}.recibo{position:absolute;left:0;top:0;width:100%;background:#fff;color:#000;border:none}}
     .error-message{color:#ff6b6b;font-size:12px;display:none;margin-top:6px}
     input.invalid,textarea.invalid{box-shadow:0 0 0 4px rgba(239,68,68,0.08)}
+
     /* subtle iOS-like controls */
     select{appearance:none;background-image:linear-gradient(45deg,transparent 50%, rgba(0,0,0,0.12) 50%), linear-gradient(135deg, rgba(0,0,0,0.06) 50%, transparent 50%); background-position:calc(100% - 20px) calc(1em + 2px), calc(100% - 15px) calc(1em + 2px); background-size:6px 6px, 6px 6px; background-repeat:no-repeat; padding-right:40px;}
 
     /* small modal styles */
     .modal-backdrop{display:none;position:fixed;inset:0;background:rgba(2,6,23,0.6);z-index:3000;align-items:center;justify-content:center}
-    .modal{width:92%;max-width:720px;background:var(--card);border-radius:12px;padding:14px;border:1px solid var(--border)}
+    .modal{width:92%;max-width:720px;background:var(--card);border-radius:12px;padding:12px;border:1px solid var(--border)}
     .modal h3{margin:0 0 8px 0}
+
+    /* IA modal styling tweaks */
+    #aiModal.modal-backdrop{background: rgba(2,6,23,0.75);backdrop-filter: none;display:none}
+    #aiModal .modal{background: rgba(6,8,10,0.48);color: var(--text);backdrop-filter: blur(10px) saturate(140%);-webkit-backdrop-filter: blur(10px) saturate(140%);border:1px solid rgba(255,255,255,0.06);box-shadow: 0 20px 60px rgba(2,6,23,0.6);padding:18px}
+    #aiModal .modal input, #aiModal .modal select, #aiModal .modal textarea {background: rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.06);color: var(--text);}
+
+    /* visually indicate fixed/read-only fields */
+    input[readonly], textarea[readonly]{background: rgba(255,255,255,0.01) !important;color: var(--muted) !important;cursor: not-allowed}
+    input[readonly]::placeholder{ color: rgba(255,255,255,0.15) !important; }
+
+    /* tighten form spacing */
+    .form-group{margin-bottom:6px}
+    #paymentDetailsHolder > div{margin-top:8px}
 
   </style>
 </head>
@@ -125,22 +156,31 @@
           <div class="row row-2">
             <div class="form-group">
               <label class="required">Recebedor</label>
+              <select id="recebedorPreset" aria-label="Selecionar recebedor" style="margin-bottom:8px;padding:10px;border-radius:8px">
+                <option value="">Selecionar recebedor...</option>
+                <option value="0">Wallace Silva da Silva</option>
+                <option value="1">Walter Tavares Gomes</option>
+                <option value="2">Rubens Gonçalves</option>
+                <option value="other">Outro...</option>
+              </select>
               <input id="recebedor" placeholder="Nome / Razão social" />
               <div class="error-message" id="recebedor-error">Obrigatório</div>
             </div>
             <div class="form-group">
               <label class="required">CPF/CNPJ</label>
-              <input id="docRecebedor" placeholder="000.000.000-00" />
+              <input id="docRecebedor" placeholder="000.000.000-00 ou 00.000.000/0000-00" />
               <div class="error-message" id="docRecebedor-error">Inválido</div>
             </div>
             <div class="form-group">
               <label class="required">Pagador</label>
-              <input id="pagador" placeholder="Nome do pagador" />
+              <!-- campo fixo: readonly -->
+              <input id="pagador" placeholder="Nome do pagador" readonly data-fixed="true" />
               <div class="error-message" id="pagador-error">Obrigatório</div>
             </div>
             <div class="form-group">
               <label class="required">CPF/CNPJ</label>
-              <input id="docPagador" placeholder="000.000.000-00" />
+              <!-- CNPJ fixo: readonly -->
+              <input id="docPagador" placeholder="000.000.000-00" readonly data-fixed="true" />
               <div class="error-message" id="docPagador-error">Inválido</div>
             </div>
           </div>
@@ -149,9 +189,9 @@
             <div class="form-group">
               <label class="required">Descrição</label>
               <textarea id="descricao" placeholder="Descrição" spellcheck="true" autocorrect="on" autocapitalize="sentences"></textarea>
-              <div style="display:flex;gap:8px;margin-top:6px">
+              <div style="display:flex;gap:8px;margin-top:6px;flex-wrap:wrap">
                 <button type="button" id="checkSpelling" class="ghost">Verificar ortografia</button>
-                <button type="button" id="openAIButton" class="primary">Gerar com IA (local)</button>
+                <button type="button" id="openAIButton" class="primary" style="min-width:160px">Gerar com IA (local)</button>
               </div>
               <div class="error-message" id="descricao-error">Obrigatório</div>
             </div>
@@ -169,7 +209,8 @@
             </div>
             <div class="form-group">
               <label class="required">Cidade/UF</label>
-              <input id="cidade" placeholder="Cidade/UF" />
+              <!-- campo cidade fixo: readonly -->
+              <input id="cidade" placeholder="Cidade/UF" readonly data-fixed="true" />
               <div class="error-message" id="cidade-error">Obrigatório</div>
             </div>
           </div>
@@ -198,7 +239,7 @@
           <!-- holder onde os campos dinâmicos serão inseridos -->
           <div id="paymentDetailsHolder" style="margin-top:8px"></div>
 
-          <div style="display:flex;gap:8px;margin-top:12px;flex-wrap:wrap">
+          <div style="display:flex;gap:8px;margin-top:12px;flex-wrap:wrap" class="actions">
             <button class="primary" id="gerar">Atualizar</button>
             <button id="imprimir">PDF</button>
             <button class="ghost" id="limpar">Limpar</button>
@@ -345,12 +386,64 @@
     const nf = new Intl.NumberFormat('pt-BR',{style:'currency',currency:'BRL'});
 
     function setCurrencyMask(el){ if(!el) return; el.addEventListener('input', e=>{ let v = e.target.value.replace(/\D/g,''); v = (Number(v)/100).toFixed(2); e.target.value = v ? nf.format(v) : ''; }); el.addEventListener('blur', ()=>{ if(!el.value.trim()) el.value = nf.format(0); }); }
-    function setDocMask(el){ if(!el) return; el.addEventListener('input', e=>{ let v = e.target.value.replace(/\D/g,''); if(v.length>11) v = v.replace(/^(\d{2})(\d{3})(\d{3})(\d{4})(\d{0,2}).*/,'$1.$2.$3/$4-$5'); else v = v.replace(/^(\d{3})(\d{3})(\d{3})(\d{0,2}).*/,'$1.$2.$3-$4'); e.target.value = v; }); }
+    function setDocMask(el){ if(!el) return; // mask for CPF/CNPJ
+      const handler = e=>{ let v = e.target.value.replace(/\D/g,''); if(v.length>14) v = v.slice(0,14); if(v.length>11) v = v.replace(/^(\d{2})(\d{3})(\d{3})(\d{4})(\d{0,2}).*/,'$1.$2.$3/$4-$5'); else v = v.replace(/^(\d{3})(\d{3})(\d{3})(\d{0,2}).*/,'$1.$2.$3-$4'); e.target.value = v; };
+      el.oninput = handler;
+    }
+    function setPhoneMask(el){ if(!el) return;
+      const handler = e=>{
+        let v = e.target.value.replace(/\D/g,'');
+        if(v.length > 13) v = v.slice(0,13);
+        if(v.length >= 11){
+          if(v.startsWith('55') && v.length>2) v = v.slice(2);
+          const ddd = v.slice(0,2), rest = v.slice(2);
+          if(rest.length === 9) e.target.value = `+55 ${ddd} ${rest.slice(0,5)}-${rest.slice(5)}`;
+          else if(rest.length === 8) e.target.value = `+55 ${ddd} ${rest.slice(0,4)}-${rest.slice(4)}`;
+          else e.target.value = `+55 ${ddd} ${rest}`;
+        } else if(v.length >= 3){
+          const ddd = v.slice(0,2), rest = v.slice(2);
+          e.target.value = `+55 ${ddd} ${rest}`;
+        } else if(v.length>0){
+          e.target.value = `+55 ${v}`;
+        } else e.target.value = '';
+      };
+      el.oninput = handler;
+    }
+
     setCurrencyMask(campos.valor); setDocMask(campos.docRecebedor); setDocMask(campos.docPagador);
 
     function validateField(field, errorId, msg){ if(!field || !field.value || !field.value.toString().trim()){ if(field) field.classList.add('invalid'); if(errorId && $$(errorId)) { $$(errorId).style.display='block'; $$(errorId).textContent = msg || 'Obrigatório'; } return false; } if(field.id && field.id.includes('doc')){ const doc = field.value.replace(/\D/g,''); if(!(doc.length===11 || doc.length===14)){ field.classList.add('invalid'); if(errorId && $$(errorId)) { $$(errorId).style.display='block'; $$(errorId).textContent = 'Inválido'; } return false; } } if(field.id === 'valor'){ const val = parseFloat(field.value.replace(/\D/g,''))/100; if(isNaN(val) || val<0){ field.classList.add('invalid'); if(errorId && $$(errorId)){ $$(errorId).style.display='block'; $$(errorId).textContent='Inválido'; } return false; } } field.classList.remove('invalid'); if(errorId && $$(errorId)) $$(errorId).style.display='none'; return true; }
 
-    function validateForm(){ let ok = true; if(!validateField(campos.recebedor,'recebedor-error')) ok=false; if(!validateField(campos.docRecebedor,'docRecebedor-error')) ok=false; if(!validateField(campos.pagador,'pagador-error')) ok=false; if(!validateField(campos.docPagador,'docPagador-error')) ok=false; if(!validateField(campos.descricao,'descricao-error')) ok=false; if(!validateField(campos.valor,'valor-error')) ok=false; if(!validateField(campos.cidade,'cidade-error')) ok=false; const forma = (campos.forma && campos.forma.value) ? campos.forma.value : ''; if(forma === 'PIX'){ if(!campos.pixKey || !validateField(campos.pixKey,'pixKey-error')) ok=false; } else if(forma === 'Transferência bancária' ){ if(!campos.bankName || !validateField(campos.bankName,'bankName-error')) ok=false; if(!campos.bankAgency || !validateField(campos.bankAgency,'bankAgency-error')) ok=false; if(!campos.bankAccount || !validateField(campos.bankAccount,'bankAccount-error')) ok=false; } return ok; }
+    function validateForm(){ let ok = true; if(!validateField(campos.recebedor,'recebedor-error')) ok=false; if(!validateField(campos.docRecebedor,'docRecebedor-error')) ok=false; if(!validateField(campos.pagador,'pagador-error')) ok=false; if(!validateField(campos.docPagador,'docPagador-error')) ok=false; if(!validateField(campos.descricao,'descricao-error')) ok=false; if(!validateField(campos.valor,'valor-error')) ok=false; if(!validateField(campos.cidade,'cidade-error')) ok=false; const forma = (campos.forma && campos.forma.value) ? campos.forma.value : ''; if(forma === 'PIX'){
+        if(!campos.pixKey || !campos.pixType) { ok=false; if(campos.pixKey && $$('pixKey-error')) $$('pixKey-error').style.display='block'; else if($$('pixKey-error')) $$('pixKey-error').style.display='block'; }
+        else {
+          const type = (campos.pixType.value||'').toUpperCase();
+          const raw = (campos.pixKey.value||'').replace(/\s+/g,'');
+          if(type === 'CPF'){
+            const digits = raw.replace(/\D/g,'');
+            if(digits.length !== 11){ campos.pixKey.classList.add('invalid'); $$('pixKey-error').style.display='block'; $$('pixKey-error').textContent='CPF inválido (11 dígitos)'; ok=false; }
+            else { campos.pixKey.classList.remove('invalid'); $$('pixKey-error').style.display='none'; }
+          } else if(type === 'CNPJ'){
+            const digits = raw.replace(/\D/g,'');
+            if(digits.length !== 14){ campos.pixKey.classList.add('invalid'); $$('pixKey-error').style.display='block'; $$('pixKey-error').textContent='CNPJ inválido (14 dígitos)'; ok=false; }
+            else { campos.pixKey.classList.remove('invalid'); $$('pixKey-error').style.display='none'; }
+          } else if(type === 'CELULAR'){
+            const digits = raw.replace(/\D/g,'');
+            if(digits.length < 10){ campos.pixKey.classList.add('invalid'); $$('pixKey-error').style.display='block'; $$('pixKey-error').textContent='Número inválido'; ok=false; }
+            else { campos.pixKey.classList.remove('invalid'); $$('pixKey-error').style.display='none'; }
+          } else if(type === 'EMAIL'){
+            const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if(!re.test(campos.pixKey.value.trim())){ campos.pixKey.classList.add('invalid'); $$('pixKey-error').style.display='block'; $$('pixKey-error').textContent='Email inválido'; ok=false; }
+            else { campos.pixKey.classList.remove('invalid'); $$('pixKey-error').style.display='none'; }
+          } else {
+            if(!campos.pixKey.value.trim()){ campos.pixKey.classList.add('invalid'); $$('pixKey-error').style.display='block'; ok=false; }
+          }
+        }
+      } else if(forma === 'Transferência bancária' ){
+        if(!campos.bankName || !validateField(campos.bankName,'bankName-error')) ok=false;
+        if(!campos.bankAgency || !validateField(campos.bankAgency,'bankAgency-error')) ok=false;
+        if(!campos.bankAccount || !validateField(campos.bankAccount,'bankAccount-error')) ok=false;
+      } return ok; }
 
     function showToast(msg,d=3000){ const t = $$('toast'); $$('toast-message').textContent = msg; t.classList.add('show'); setTimeout(()=>t.classList.remove('show'),d); }
 
@@ -379,7 +472,15 @@
       // payment info
       const pay = document.getElementById('vPaymentInfo');
       if(pay){
-        if(forma==='PIX') pay.textContent = (campos.pixKey && campos.pixKey.value)?campos.pixKey.value:'—';
+        if(forma==='PIX'){
+          const type = campos.pixType ? (campos.pixType.value||'').toUpperCase() : '';
+          const key = campos.pixKey && campos.pixKey.value ? campos.pixKey.value : '—';
+          if(type === 'CPF') pay.textContent = 'CPF: ' + key;
+          else if(type === 'CNPJ') pay.textContent = 'CNPJ: ' + key;
+          else if(type === 'CELULAR') pay.textContent = 'Celular: ' + key;
+          else if(type === 'EMAIL') pay.textContent = 'Email: ' + key;
+          else pay.textContent = key;
+        }
         else if(forma==='Transferência bancária' ){
           const parts=[]; if(campos.bankName && campos.bankName.value) parts.push(campos.bankName.value);
             if(campos.bankAgency && campos.bankAgency.value) parts.push('Ag: '+campos.bankAgency.value);
@@ -402,7 +503,6 @@
     function openSignature(){ document.getElementById('signatureModal').style.display='flex'; initSignatureCanvas(); }
     function closeSignatureModal(){ document.getElementById('signatureModal').style.display='none'; }
     function initSignatureCanvas(){ const c = document.getElementById('signaturePad'); if(!c) return; sigCanvas = c; sigCtx = c.getContext('2d'); resizeSigCanvas(); sigCtx.strokeStyle='#000'; sigCtx.lineWidth=2.5; sigCtx.lineCap='round';
-      // pointer events
       c.onpointerdown = startSig; c.onpointermove = moveSig; c.onpointerup = endSig; c.onpointercancel = endSig; window.addEventListener('resize', resizeSigCanvas);
     }
     function resizeSigCanvas(){ if(!sigCanvas) return; const ratio = window.devicePixelRatio || 1; const w = sigCanvas.clientWidth, h = sigCanvas.clientHeight; sigCanvas.width = Math.floor(w*ratio); sigCanvas.height = Math.floor(h*ratio); sigCtx.setTransform(ratio,0,0,ratio,0,0); sigCtx.fillStyle='#fff'; sigCtx.fillRect(0,0,w,h); }
@@ -414,7 +514,6 @@
 
     // Local IA generator (no external API)
     function generateLocalAI(template, seed, tone, length){
-      // basic deterministic generator that composes a natural receipt description in Portuguese
       const recebedor = (campos.recebedor && campos.recebedor.value) ? campos.recebedor.value : 'o Recebedor';
       const pagador = (campos.pagador && campos.pagador.value) ? campos.pagador.value : 'o Pagador';
       const valorStr = (campos.valor && campos.valor.value)?campos.valor.value.replace(/\D/g,'') : '0';
@@ -425,32 +524,28 @@
       const cidade = (campos.cidade && campos.cidade.value)?campos.cidade.value : 'Cidade/UF';
       const baseSeed = seed && seed.trim() ? seed.trim() : '';
 
-      // template variations
       let text = '';
       if(template === 'freestyle'){
         text = `${recebedor} declara ter recebido de ${pagador} a quantia de ${nf.format(vNum)} (${valorExt})${ baseSeed ? ' — ' + baseSeed : '' }.`;
       } else if(template === 'paragraph-writer'){
         text = `Declaro para os devidos fins que ${recebedor} recebeu de ${pagador} o valor de ${nf.format(vNum)} (${valorExt}), referente a ${ baseSeed || 'serviços prestados' }. Pagamento efetuado em ${data}, na cidade de ${cidade}, por meio de ${forma}.`;
       } else {
-        // article-writer -> mais detalhado
         text = `Pelo presente recibo, ${recebedor} recebe de ${pagador} a importância de ${nf.format(vNum)} (${valorExt}). O pagamento refere-se a ${ baseSeed || 'serviço ou produto acordado entre as partes' } e foi realizado em ${data}, em ${cidade}, mediante ${forma}. Fica o presente para comprovação do recebimento.`;
       }
 
-      // tone adjustments (small stylistic changes)
       if(tone === 'formal'){
-        text = text.replace(/^/,''); // already formal by templates
+        // nothing extra
       } else if(tone === 'informal'){
         text = text.replace(/Declaro para os devidos fins que /,'').replace(/Pelo presente recibo, /,'');
         if(!text.startsWith('Recebi')) text = 'Recebi de ' + text.charAt(0).toLowerCase() + text.slice(1);
       }
 
-      // length control: if requested larger, append short clarifications until approximate
       const words = text.split(/\s+/).filter(Boolean).length;
       if(length && length > words){
         const filler = ' Este documento serve como comprovante de pagamento e foi emitido para registro e controle entre as partes.';
         while(text.split(/\s+/).filter(Boolean).length < length){
           text += filler;
-          if(text.split(/\s+/).filter(Boolean).length > length + 30) break; // safety
+          if(text.split(/\s+/).filter(Boolean).length > length + 30) break;
         }
       }
 
@@ -460,7 +555,7 @@
     function openAIModal(){ const modal = document.getElementById('aiModal'); if(!modal) return; modal.style.display='flex'; }
     function closeAIModal(){ const modal = document.getElementById('aiModal'); if(!modal) return; modal.style.display='none'; }
 
-    function generateWithSimplified(){ // now local
+    function generateWithSimplified(){
       const template = document.getElementById('simplifiedTemplate').value || 'freestyle'; const length = Number(document.getElementById('aiLength').value) || 60; const tone = document.getElementById('aiTone').value || 'neutral'; const seed = document.getElementById('localSeed').value || '';
       showToast('Gerando descrição local...',1200);
       try{
@@ -476,23 +571,91 @@
     function init(){
       campos.data.valueAsDate = today; campos.numero.value = defaultNum(); campos.valor.value = nf.format(0);
 
-      // habilitar corretor para a descrição e botão de verificação
-      try{ if(campos.descricao){ campos.descricao.setAttribute('spellcheck','true'); campos.descricao.setAttribute('autocorrect','on'); campos.descricao.setAttribute('autocapitalize','sentences'); } }catch(e){}
+      // Set fixed values for Pagador, CNPJ and Cidade as requested
+      try{
+        if(campos.pagador){
+          campos.pagador.value = 'C E Benetti';
+          campos.pagador.setAttribute('readonly','true');
+          campos.pagador.dataset.fixed = 'true';
+        }
+        if(campos.docPagador){
+          campos.docPagador.value = '11.422.349/0001-38';
+          campos.docPagador.setAttribute('readonly','true');
+          campos.docPagador.dataset.fixed = 'true';
+        }
+        if(campos.cidade){
+          campos.cidade.value = 'Belém/PA';
+          campos.cidade.setAttribute('readonly','true');
+          campos.cidade.dataset.fixed = 'true';
+        }
+      }catch(e){ console.warn('Erro ao setar campos fixos', e); }
+
+      // Presets para recebedor (seleção rápida)
+      try{
+        const recebedorPresets = [
+          {name:'Wallace Silva da Silva', cpf:'004.447.362-12'},
+          {name:'Walter Tavares Gomes', cpf:'000.000.000-00'},
+          {name:'Rubens Gonçalves', cpf:'000.000.000-00'}
+        ];
+        const presetEl = document.getElementById('recebedorPreset');
+        if(presetEl){
+          presetEl.addEventListener('change', function(e){
+            const v = e.target.value;
+            if(v === '' ){
+              campos.recebedor.value='';
+              campos.docRecebedor.value='';
+              campos.recebedor.removeAttribute('readonly');
+              campos.docRecebedor.removeAttribute('readonly');
+              atualizarPreview(false);
+            }
+            else if(v === 'other'){
+              campos.recebedor.value='';
+              campos.docRecebedor.value='';
+              campos.recebedor.removeAttribute('readonly');
+              campos.docRecebedor.removeAttribute('readonly');
+              campos.recebedor.focus();
+              atualizarPreview(false);
+            }
+            else {
+              const sel = recebedorPresets[Number(v)];
+              if(sel){
+                campos.recebedor.value = sel.name;
+                campos.docRecebedor.value = sel.cpf;
+                try{ campos.docRecebedor.dispatchEvent(new Event('input')); }catch(e){}
+                campos.recebedor.setAttribute('readonly','true');
+                campos.docRecebedor.setAttribute('readonly','true');
+                atualizarPreview(false);
+              }
+            }
+          });
+
+          presetEl.value = '0';
+          presetEl.dispatchEvent(new Event('change'));
+        }
+      } catch(e){ console.warn('Erro ao configurar presets do recebedor', e); }
+
       const checkBtn = document.getElementById('checkSpelling'); if(checkBtn){ checkBtn.addEventListener('click', e=>{ e.preventDefault(); const el = campos.descricao; if(!el) return; el.spellcheck = false; setTimeout(()=>{ el.spellcheck = true; el.focus(); el.blur(); showToast('Verificação de ortografia ativada'); }, 60); }); }
 
-      // open AI modal
       const openBtn = document.getElementById('openAIButton'); if(openBtn){ openBtn.addEventListener('click', e=>{ e.preventDefault(); openAIModal(); }); }
       document.getElementById('aiClose').addEventListener('click', e=>{ e.preventDefault(); closeAIModal(); });
       document.getElementById('aiGenerate').addEventListener('click', e=>{ e.preventDefault(); generateWithSimplified(); });
 
-      // create payment fields inside holder (PIX + Transferência)
+      // create payment fields inside holder (PIX + Transferência) with CNPJ option
       (function(){
         const holder = document.getElementById('paymentDetailsHolder');
         if(!holder) return;
         holder.innerHTML = `
           <div id="pixGroup" style="display:none">
-            <label class="required">Chave PIX</label>
-            <input id="pixKey" placeholder="CPF, celular, número ou e-mail (ex: 000.000.000-00 / +55 11 9xxxx-xxxx / nome@exemplo.com)" />
+            <label class="required">Tipo de chave PIX</label>
+            <select id="pixType">
+              <option value="CPF">CPF</option>
+              <option value="CNPJ">CNPJ</option>
+              <option value="EMAIL">Email</option>
+              <option value="CELULAR">Celular</option>
+            </select>
+
+            <label class="required" style="margin-top:8px">Chave PIX</label>
+            <input id="pixKey" placeholder="000.000.000-00 / 00.000.000/0000-00 / nome@exemplo.com / +55 11 9xxxx-xxxx" />
             <div class="error-message" id="pixKey-error">Obrigatório</div>
           </div>
           <div id="transferGroup" style="display:none;margin-top:8px">
@@ -514,22 +677,41 @@
             <input id="bankHolder" placeholder="Nome do titular" />
           </div>
         `;
-        // wire into campos
-        campos.pixKey = document.getElementById('pixKey'); campos.bankName = document.getElementById('bankName'); campos.bankAgency = document.getElementById('bankAgency');
+        campos.pixKey = document.getElementById('pixKey'); campos.pixType = document.getElementById('pixType');
+        campos.bankName = document.getElementById('bankName'); campos.bankAgency = document.getElementById('bankAgency');
         campos.bankAccount = document.getElementById('bankAccount'); campos.bankType = document.getElementById('bankType'); campos.bankHolder = document.getElementById('bankHolder');
         if(campos.bankType) campos.bankType.value = 'Conta corrente';
+
+        function applyPixTypeBehavior(){
+          const type = (campos.pixType && campos.pixType.value) ? campos.pixType.value.toUpperCase() : 'CPF';
+          const el = campos.pixKey;
+          if(!el) return;
+          el.oninput = null;
+          if(type === 'CPF'){ el.placeholder = '000.000.000-00'; setDocMask(el); }
+          else if(type === 'CNPJ'){ el.placeholder = '00.000.000/0000-00'; setDocMask(el); }
+          else if(type === 'CELULAR'){ el.placeholder = '+55 11 9xxxx-xxxx'; setPhoneMask(el); }
+          else { el.placeholder = 'nome@exemplo.com'; el.oninput = e=>{}; }
+        }
 
         function onPaymentChange(){
           const f = (campos.forma && campos.forma.value) ? campos.forma.value : '';
           const pixG = document.getElementById('pixGroup'), trG = document.getElementById('transferGroup');
-          // Show/hide groups
           if(f === 'PIX'){ if(pixG) pixG.style.display='block'; if(trG) trG.style.display='none'; }
           else if(f === 'Transferência bancária'){ if(pixG) pixG.style.display='none'; if(trG) trG.style.display='block'; }
           else { if(pixG) pixG.style.display='none'; if(trG) trG.style.display='none'; }
 
-          // update preview payment info immediately (include tipo de conta quando presente)
+          if(f === 'PIX'){ applyPixTypeBehavior(); }
+
           const vPay = document.getElementById('vPaymentInfo'); if(!vPay) return;
-          if(f==='PIX'){ vPay.textContent = (campos.pixKey && campos.pixKey.value)?campos.pixKey.value:'—'; }
+          if(f==='PIX'){
+            const type = (campos.pixType && campos.pixType.value) ? campos.pixType.value.toUpperCase() : '';
+            const key = campos.pixKey && campos.pixKey.value ? campos.pixKey.value : '—';
+            if(type === 'CPF') vPay.textContent = 'CPF: ' + key;
+            else if(type === 'CNPJ') vPay.textContent = 'CNPJ: ' + key;
+            else if(type === 'CELULAR') vPay.textContent = 'Celular: ' + key;
+            else if(type === 'EMAIL') vPay.textContent = 'Email: ' + key;
+            else vPay.textContent = key;
+          }
           else if(f==='Transferência bancária'){
             const parts = []; if(campos.bankName && campos.bankName.value) parts.push(campos.bankName.value); if(campos.bankAgency && campos.bankAgency.value) parts.push('Ag: '+campos.bankAgency.value); if(campos.bankAccount && campos.bankAccount.value) parts.push('Cc: '+campos.bankAccount.value); if(campos.bankType && campos.bankType.value) parts.push(campos.bankType.value); if(campos.bankHolder && campos.bankHolder.value) parts.push('Titular: '+campos.bankHolder.value); vPay.textContent = parts.length?parts.join(' • '):'—'; }
           else vPay.textContent='—';
@@ -537,11 +719,13 @@
         campos.forma.addEventListener('change', onPaymentChange);
         ['pixKey','bankName','bankAgency','bankAccount','bankHolder'].forEach(id=>{ const e=document.getElementById(id); if(e){ e.addEventListener('input', onPaymentChange); e.addEventListener('change', onPaymentChange); } });
         const bankTypeEl = document.getElementById('bankType'); if(bankTypeEl){ bankTypeEl.addEventListener('change', onPaymentChange); bankTypeEl.addEventListener('input', onPaymentChange); }
+        if(campos.pixType){ campos.pixType.addEventListener('change', ()=>{ applyPixTypeBehavior(); onPaymentChange(); }); }
+        if(campos.pixKey){ campos.pixKey.addEventListener('input', onPaymentChange); }
+
         window.onPaymentChange = onPaymentChange;
         onPaymentChange();
       })();
 
-      // logo file - keep safe (compat)
       if(campos.logo) campos.logo.addEventListener('change', e=>{ const f=e.target.files?.[0]; if(!f){ v.logoPreview.style.display='none'; v.logoPreview.src=''; return; } const r=new FileReader(); r.onload=()=>{ v.logoPreview.src=r.result; v.logoPreview.style.display='block'; }; r.readAsDataURL(f); });
 
       // buttons
@@ -551,16 +735,25 @@
 
       document.getElementById('limpar').addEventListener('click', e=>{
         e.preventDefault();
-        Object.values(campos).forEach(el=>{ if(!el) return; try{ if(el.type==='file'){ el.value=''; if(v.logoPreview) v.logoPreview.style.display='none'; } else if(el.type==='date'){ el.valueAsDate = today; } else el.value=''; }catch(_){} });
+        Object.values(campos).forEach(el=>{ if(!el) return; try{
+          if(el.dataset && el.dataset.fixed === 'true') return;
+          if(el.type==='file'){ el.value=''; if(v.logoPreview) v.logoPreview.style.display='none'; }
+          else if(el.type==='date'){ el.valueAsDate = today; }
+          else el.value='';
+        }catch(_){} });
         campos.data.valueAsDate = today; campos.numero.value = defaultNum(); campos.valor.value = nf.format(0);
         try{ if(campos.forma) campos.forma.value='PIX'; }catch(e){}
         try{ if(campos.bankType) campos.bankType.value='Conta corrente'; }catch(e){}
         try{ if(typeof window.onPaymentChange === 'function') window.onPaymentChange(); }catch(e){}
         limparErrosVisuais();
         v.recebedor.textContent='Recebedor'; v.docRecebedor.textContent='CPF/CNPJ'; v.recebedor2.textContent='Recebedor';
-        v.pagador.textContent='Pagador'; v.docPagador.textContent='000.000.000-00'; v.valor.textContent=nf.format(0); v.valor2.textContent=nf.format(0);
+        v.pagador.textContent = campos.pagador && campos.pagador.value ? campos.pagador.value : 'Pagador';
+        v.docPagador.textContent = campos.docPagador && campos.docPagador.value ? campos.docPagador.value : '000.000.000-00';
+        v.valor.textContent=nf.format(0); v.valor2.textContent=nf.format(0);
         v.extenso.textContent='zero real'; v.descricao.textContent='Descrição'; v.forma.textContent='PIX'; v.obs.textContent='Observações'; v.numero.textContent='00001';
-        v.dataTop.textContent = formatDate(today); v.cidadeData.textContent = `Cidade/UF, ${formatDate(today)}`;
+        const initial = campos.data.value ? parseDateInput(campos.data.value) : today;
+        v.dataTop.textContent = formatDate(initial);
+        v.cidadeData.textContent = `${campos.cidade && campos.cidade.value ? campos.cidade.value : 'Cidade/UF'}, ${formatDate(initial)}`;
         showToast('Formulário limpo!');
       });
 
@@ -579,7 +772,13 @@
       const initial = campos.data.value ? parseDateInput(campos.data.value) : today;
       v.dataTop.textContent = formatDate(initial);
       v.cidadeData.textContent = `Cidade/UF, ${formatDate(initial)}`;
+      if(campos.pagador && campos.pagador.value) v.pagador.textContent = campos.pagador.value;
+      if(campos.docPagador && campos.docPagador.value) v.docPagador.textContent = campos.docPagador.value;
+      if(campos.cidade && campos.cidade.value) v.cidadeData.textContent = `${campos.cidade.value}, ${formatDate(initial)}`;
       atualizarPreview(false);
+
+      // small accessibility improvement: allow Enter to trigger gerar when focused on description
+      campos.descricao.addEventListener('keydown', e=>{ if(e.key==='Enter' && (e.metaKey || e.ctrlKey)){ e.preventDefault(); document.getElementById('gerar').click(); } });
     }
 
     document.addEventListener('DOMContentLoaded', init);
