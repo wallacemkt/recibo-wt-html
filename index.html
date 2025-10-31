@@ -273,9 +273,9 @@
 
           <div style="display:flex;gap:8px;margin-top:12px;flex-wrap:wrap" class="actions">
             <button class="primary btn" id="gerar"><i class="fas fa-sync-alt"></i> Atualizar</button>
-            <button class="secondary btn" id="imprimir"><i class="fas fa-file-pdf"></i> PDF</button>
+            <button class="secondary btn" id="imprimir"><i class="fas a-file-pdf"></i> PDF</button>
             <button class="ghost btn" id="limpar"><i class="fas fa-eraser"></i> Limpar</button>
-            <button class="ghost btn" id="assinar"><i class="fas a-signature"></i> Assinar</button>
+            <button class="ghost btn" id="assinar"><i class="fas fa-signature"></i> Assinar</button>
           </div>
         </div>
       </section>
@@ -411,40 +411,40 @@
     };
 
     const campos = {
-      recebedor: $$('recebedor'),
-      docRecebedor: $$('docRecebedor'),
-      pagador: $$('pagador'),
-      docPagador: $$('docPagador'),
-      descricao: $$('descricao'),
-      valor: $$('valor'),
-      data: $$('data'),
-      cidade: $$('cidade'),
-      forma: $$('forma'),
-      numero: $$('numero'),
-      obs: $$('obs'),
-      periodStart: $$('periodStart'),
-      periodEnd: $$('periodEnd'),
-      logo: $$('logo'),
-      preset: $$('preset')
+      recebedor: $$('#recebedor'),
+      docRecebedor: $$('#docRecebedor'),
+      pagador: $$('#pagador'),
+      docPagador: $$('#docPagador'),
+      descricao: $$('#descricao'),
+      valor: $$('#valor'),
+      data: $$('#data'),
+      cidade: $$('#cidade'),
+      forma: $$('#forma'),
+      numero: $$('#numero'),
+      obs: $$('#obs'),
+      periodStart: $$('#periodStart'),
+      periodEnd: $$('#periodEnd'),
+      logo: $$('#logo'),
+      preset: $$('#preset')
     };
     const v = {
-      recebedor: $$('vRecebedor'),
-      docRecebedor: $$('vDocRecebedor'),
-      recebedor2: $$('vRecebedor2'),
-      pagador: $$('vPagador'),
-      docPagador: $$('vDocPagador'),
-      valor: $$('vValor'),
-      valor2: $$('vValor2'),
-      extenso: $$('vExtenso'),
-      descricao: $$('vDescricao'),
-      forma: $$('vForma'),
-      obs: $$('vObs'),
-      numero: $$('vNumero'),
-      dataTop: $$('vDataTop'),
-      cidadeData: $$('vCidadeData'),
-      logoPreview: $$('logoPreview'),
-      paymentInfo: $$('vPaymentInfo'),
-      periodo: $$('vPeriodo')
+      recebedor: $$('#vRecebedor'),
+      docRecebedor: $$('#vDocRecebedor'),
+      recebedor2: $$('#vRecebedor2'),
+      pagador: $$('#vPagador'),
+      docPagador: $$('#vDocPagador'),
+      valor: $$('#vValor'),
+      valor2: $$('#vValor2'),
+      extenso: $$('#vExtenso'),
+      descricao: $$('#vDescricao'),
+      forma: $$('#vForma'),
+      obs: $$('#vObs'),
+      numero: $$('#vNumero'),
+      dataTop: $$('#vDataTop'),
+      cidadeData: $$('#vCidadeData'),
+      logoPreview: $$('#logoPreview'),
+      paymentInfo: $$('#vPaymentInfo'),
+      periodo: $$('#vPeriodo')
     };
     const nf = new Intl.NumberFormat('pt-BR',{style:'currency',currency:'BRL'});
 
@@ -458,42 +458,42 @@
 
     setCurrencyMask(campos.valor); setDocMask(campos.docRecebedor); setDocMask(campos.docPagador);
 
-    function validateField(field, errorId, msg){ if(!field || !field.value || !field.value.toString().trim()){ if(field) field.classList.add('invalid'); if(errorId && $$ (errorId)) { $$(errorId).style.display='block'; $$(errorId).textContent = msg || 'Obrigatório'; } return false; } if(field.id && field.id.includes('doc')){ const doc = field.value.replace(/\D/g,''); if(!(doc.length===11 || doc.length===14)){ field.classList.add('invalid'); if(errorId && $$ (errorId)) { $$(errorId).style.display='block'; $$(errorId).textContent = 'Inválido'; } return false; } } if(field.id === 'valor'){ const val = parseFloat(field.value.replace(/\D/g,''))/100; if(isNaN(val) || val<0){ field.classList.add('invalid'); if(errorId && $$ (errorId)){ $$(errorId).style.display='block'; $$(errorId).textContent='Inválido'; } return false; } } field.classList.remove('invalid'); if(errorId && $$ (errorId)) $$(errorId).style.display='none'; return true; }
+    function validateField(field, errorId, msg){ if(!field || !field.value || !field.value.toString().trim()){ if(field) field.classList.add('invalid'); if(errorId && $$(errorId)) { $$(errorId).style.display='block'; $$(errorId).textContent = msg || 'Obrigatório'; } return false; } if(field.id && field.id.includes('doc')){ const doc = field.value.replace(/\D/g,''); if(!(doc.length===11 || doc.length===14)){ field.classList.add('invalid'); if(errorId && $$(errorId)) { $$(errorId).style.display='block'; $$(errorId).textContent = 'Inválido'; } return false; } } if(field.id === 'valor'){ const val = parseFloat(field.value.replace(/\D/g,''))/100; if(isNaN(val) || val<0){ field.classList.add('invalid'); if(errorId && $$(errorId)){ $$(errorId).style.display='block'; $$(errorId).textContent='Inválido'; } return false; } } field.classList.remove('invalid'); if(errorId && $$(errorId)) $$(errorId).style.display='none'; return true; }
 
     function validateForm(){ let ok = true; if(!validateField(campos.recebedor,'recebedor-error')) ok=false; if(!validateField(campos.docRecebedor,'docRecebedor-error')) ok=false; if(!validateField(campos.pagador,'pagador-error')) ok=false; if(!validateField(campos.docPagador,'docPagador-error')) ok=false; if(!validateField(campos.descricao,'descricao-error')) ok=false; if(!validateField(campos.valor,'valor-error')) ok=false; if(!validateField(campos.cidade,'cidade-error')) ok=false;
 
       // validar período trabalhado (start <= end)
       const ps = campos.periodStart, pe = campos.periodEnd;
-      if(!ps || !ps.value){ if(ps) ps.classList.add('invalid'); $$('periodStart-error').style.display='block'; ok=false; } else { ps.classList.remove('invalid'); $$('periodStart-error').style.display='none'; }
-      if(!pe || !pe.value){ if(pe) pe.classList.add('invalid'); $$('periodEnd-error').style.display='block'; $$('periodEnd-error').textContent='Obrigatório'; ok=false; } else { pe.classList.remove('invalid'); $$('periodEnd-error').style.display='none'; }
+      if(!ps || !ps.value){ if(ps) ps.classList.add('invalid'); $$('#periodStart-error').style.display='block'; ok=false; } else { ps.classList.remove('invalid'); $$('#periodStart-error').style.display='none'; }
+      if(!pe || !pe.value){ if(pe) pe.classList.add('invalid'); $$('#periodEnd-error').style.display='block'; $$('#periodEnd-error').textContent='Obrigatório'; ok=false; } else { pe.classList.remove('invalid'); $$('#periodEnd-error').style.display='none'; }
       if(ps && pe && ps.value && pe.value){
         const d1 = parseDateInput(ps.value), d2 = parseDateInput(pe.value);
-        if(d1 > d2){ if(pe) pe.classList.add('invalid'); $$('periodEnd-error').style.display='block'; $$('periodEnd-error').textContent='Término anterior ao início'; ok=false; } else { if(pe) pe.classList.remove('invalid'); $$('periodEnd-error').style.display='none'; }
+        if(d1 > d2){ if(pe) pe.classList.add('invalid'); $$('#periodEnd-error').style.display='block'; $$('#periodEnd-error').textContent='Término anterior ao início'; ok=false; } else { if(pe) pe.classList.remove('invalid'); $$('#periodEnd-error').style.display='none'; }
       }
 
       const forma = (campos.forma && campos.forma.value) ? campos.forma.value : ''; if(forma === 'PIX'){
-        if(!campos.pixKey || !campos.pixType) { ok=false; if(campos.pixKey && $$('pixKey-error')) $$('pixKey-error').style.display='block'; else if($$('pixKey-error')) $$('pixKey-error').style.display='block'; }
+        if(!campos.pixKey || !campos.pixType) { ok=false; if(campos.pixKey && $$('#pixKey-error')) $$('#pixKey-error').style.display='block'; else if($$('#pixKey-error')) $$('#pixKey-error').style.display='block'; }
         else {
           const type = (campos.pixType.value||'').toUpperCase();
           const raw = (campos.pixKey.value||'').replace(/\s+/g,'');
           if(type === 'CPF'){
             const digits = raw.replace(/\D/g,'');
-            if(digits.length !== 11){ campos.pixKey.classList.add('invalid'); $$('pixKey-error').style.display='block'; $$('pixKey-error').textContent='CPF inválido (11 dígitos)'; ok=false; }
-            else { campos.pixKey.classList.remove('invalid'); $$('pixKey-error').style.display='none'; }
+            if(digits.length !== 11){ campos.pixKey.classList.add('invalid'); $$('#pixKey-error').style.display='block'; $$('#pixKey-error').textContent='CPF inválido (11 dígitos)'; ok=false; }
+            else { campos.pixKey.classList.remove('invalid'); $$('#pixKey-error').style.display='none'; }
           } else if(type === 'CNPJ'){
             const digits = raw.replace(/\D/g,'');
-            if(digits.length !== 14){ campos.pixKey.classList.add('invalid'); $$('pixKey-error').style.display='block'; $$('pixKey-error').textContent='CNPJ inválido (14 dígitos)'; ok=false; }
-            else { campos.pixKey.classList.remove('invalid'); $$('pixKey-error').style.display='none'; }
+            if(digits.length !== 14){ campos.pixKey.classList.add('invalid'); $$('#pixKey-error').style.display='block'; $$('#pixKey-error').textContent='CNPJ inválido (14 dígitos)'; ok=false; }
+            else { campos.pixKey.classList.remove('invalid'); $$('#pixKey-error').style.display='none'; }
           } else if(type === 'CELULAR'){
             const digits = raw.replace(/\D/g,'');
-            if(digits.length < 10){ campos.pixKey.classList.add('invalid'); $$('pixKey-error').style.display='block'; $$('pixKey-error').textContent='Número inválido'; ok=false; }
-            else { campos.pixKey.classList.remove('invalid'); $$('pixKey-error').style.display='none'; }
+            if(digits.length < 10){ campos.pixKey.classList.add('invalid'); $$('#pixKey-error').style.display='block'; $$('#pixKey-error').textContent='Número inválido'; ok=false; }
+            else { campos.pixKey.classList.remove('invalid'); $$('#pixKey-error').style.display='none'; }
           } else if(type === 'EMAIL'){
             const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-            if(!re.test(campos.pixKey.value.trim())){ campos.pixKey.classList.add('invalid'); $$('pixKey-error').style.display='block'; $$('pixKey-error').textContent='Email inválido'; ok=false; }
-            else { campos.pixKey.classList.remove('invalid'); $$('pixKey-error').style.display='none'; }
+            if(!re.test(campos.pixKey.value.trim())){ campos.pixKey.classList.add('invalid'); $$('#pixKey-error').style.display='block'; $$('#pixKey-error').textContent='Email inválido'; ok=false; }
+            else { campos.pixKey.classList.remove('invalid'); $$('#pixKey-error').style.display='none'; }
           } else {
-            if(!campos.pixKey.value.trim()){ campos.pixKey.classList.add('invalid'); $$('pixKey-error').style.display='block'; ok=false; }
+            if(!campos.pixKey.value.trim()){ campos.pixKey.classList.add('invalid'); $$('#pixKey-error').style.display='block'; ok=false; }
           }
         }
       } else if(forma === 'Transferência bancária' ){
@@ -502,7 +502,7 @@
         if(!campos.bankAccount || !validateField(campos.bankAccount,'bankAccount-error')) ok=false;
       } return ok; }
 
-    function showToast(msg,d=3000){ const t = $$('toast'); $$('toast-message').textContent = msg; t.classList.add('show'); setTimeout(()=>t.classList.remove('show'),d); }
+    function showToast(msg,d=3000){ const t = $$('#toast'); $$('#toast-message').textContent = msg; t.classList.add('show'); setTimeout(()=>t.classList.remove('show'),d); }
 
     // extenso functions kept
     function numeroPorExtenso(n){ const u=["zero","um","dois","três","quatro","cinco","seis","sete","oito","nove","dez","onze","doze","treze","quatorze","quinze","dezesseis","dezessete","dezoito","dezenove"]; const d=["","","vinte","trinta","quarenta","cinquenta","sessenta","setenta","oitenta","noventa"]; const c=["","cento","duzentos","trezentos","quatrocentos","quinhentos","seiscentos","setecentos","oitocentos","novecentos"]; if(n===0) return u[0]; function grupo(nm){ if(nm===0) return ""; const C=Math.floor(nm/100), D=Math.floor((nm%100)/10), U=nm%10; let t=""; if(C>0){ if(C===1 && D===0 && U===0) t="cem"; else t=c[C]; } if(D>0){ if(t) t+=" e "; if(D===1) t+=u[10+U]; else{ t+=d[D]; if(U>0) t+=" e "+u[U]; } } else if(U>0){ if(t) t+=" e "; t+=u[U]; } return t; } const bil = Math.floor(n/1000000000), mil = Math.floor((n%1000000000)/1000000), milh = Math.floor((n%1000000)/1000), uni = n%1000; let txt=""; if(bil>0) txt+=grupo(bil)+(bil===1?" bilhão":" bilhões"); if(mil>0) txt+=(txt?", ":"")+grupo(mil)+(mil===1?" milhão":" milhões"); if(milh>0) txt+=(txt?", ":"")+(milh===1?"mil":grupo(milh)+" mil"); if(uni>0) txt+=(txt?", ":"")+grupo(uni); return txt; }
