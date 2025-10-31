@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Gerador de Recibos | Estilo Moderno (Atualizado)</title>
+  <title>Gerador de Recibos</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
   <style>
@@ -154,13 +154,25 @@
       <section class="card form" aria-label="Formulário de Recibo">
         <div class="h"><h2><i class="fas fa-edit"></i> Dados</h2></div>
         <div class="b">
+
+          <!-- Cadastros rápidos (NOVO) -->
+          <div class="row row-2" style="margin-bottom:12px">
+            <div class="form-group">
+              <label>Cadastros rápidos</label>
+              <select id="preset" aria-label="Selecionar cadastro salvo">
+                <option value="">Selecionar cadastro…</option>
+                <option value="sebastiao">Sebastião Natalino Pereira Teixeira — CPF 301.821.312-20</option>
+                <option value="daniel">Daniel da Silva — CPF 271.037.732-20</option>
+              </select>
+            </div>
+            <div class="form-group" style="align-self:end">
+              <button type="button" id="applyPreset" class="ghost" style="width:100%"><i class="fas fa-user-check"></i> Aplicar cadastro</button>
+            </div>
+          </div>
+
           <div class="row row-2">
             <div class="form-group">
               <label class="required">Recebedor</label>
-              <select id="recebedorPreset" aria-label="Selecionar recebedor" style="margin-bottom:8px;padding:10px;border-radius:8px">
-                <option value="">Selecionar recebedor...</option>
-               
-              </select>
               <input id="recebedor" placeholder="Nome / Razão social" />
               <div class="error-message" id="recebedor-error">Obrigatório</div>
             </div>
@@ -193,12 +205,17 @@
             </div>
           </div>
 
-          <!-- Quantidade de diárias (substitui período) -->
-          <div class="row row-2" style="margin-top:4px">
+          <!-- Substituído: Quantidade de diárias -> Período trabalhado (início/fim) -->
+          <div class="row row-3" style="margin-top:4px">
             <div class="form-group">
-              <label class="required">Quantidade de diárias</label>
-              <input id="quantidadeDiarias" type="number" min="1" placeholder="Ex: 1" />
-              <div class="error-message" id="quantidadeDiarias-error">Obrigatório</div>
+              <label class="required">Data início (Período trabalhado)</label>
+              <input id="periodStart" type="date" />
+              <div class="error-message" id="periodStart-error">Obrigatório</div>
+            </div>
+            <div class="form-group">
+              <label class="required">Data término (Período trabalhado)</label>
+              <input id="periodEnd" type="date" />
+              <div class="error-message" id="periodEnd-error">Obrigatório / maior que início</div>
             </div>
             <div class="form-group">
               <label>Observação</label>
@@ -258,7 +275,7 @@
             <button class="primary btn" id="gerar"><i class="fas fa-sync-alt"></i> Atualizar</button>
             <button class="secondary btn" id="imprimir"><i class="fas fa-file-pdf"></i> PDF</button>
             <button class="ghost btn" id="limpar"><i class="fas fa-eraser"></i> Limpar</button>
-            <button class="ghost btn" id="assinar"><i class="fas fa-signature"></i> Assinar</button>
+            <button class="ghost btn" id="assinar"><i class="fas a-signature"></i> Assinar</button>
           </div>
         </div>
       </section>
@@ -282,8 +299,8 @@
               <div class="line"><label>O valor de</label><div class="val"><span id="vValor">R$ 0,00</span> (<span id="vExtenso">zero real</span>)</div></div>
               <div class="line"><label>Referente a</label><div class="val" id="vDescricao">Descrição</div></div>
 
-              <!-- novo: Quantidade de diárias -->
-              <div class="line"><label>Quantidade de diárias</label><div class="val" id="vPeriodo">—</div></div>
+              <!-- Período trabalhado -->
+              <div class="line"><label>Período trabalhado</label><div class="val" id="vPeriodo">—</div></div>
 
               <div class="line"><label>Forma de pagamento</label><div class="val" id="vForma">PIX</div></div>
               <div class="line" id="paymentInfoLine"><label>Dados de pagamento</label><div class="val" id="vPaymentInfo">—</div></div>
@@ -370,6 +387,29 @@
 
     const defaultNum = () => { const n = new Date(); return `REC${n.getFullYear()}${pad(n.getMonth()+1)}${pad(n.getDate())}-${Math.floor(Math.random()*90000)+10000}`; };
 
+    // === CADASTROS RÁPIDOS (NOVO) ===
+    const PRESETS = {
+      sebastiao: {
+        recebedor: 'Sebastião Natalino Pereira Teixeira',
+        docRecebedor: '301.821.312-20',
+        descricao: 'SERVIÇOS DIVERSOS',
+        forma: 'Transferência bancária',
+        bankName: 'CAIXA ECONÔMICA',
+        bankAgency: '0820',
+        bankAccount: '000776783292-0',
+        bankType: 'Poupança',
+        bankHolder: 'Sebastião Natalino Pereira Teixeira'
+      },
+      daniel: {
+        recebedor: 'DANIEL DA SILVA',
+        docRecebedor: '271.037.732-20',
+        descricao: 'REFERENTE A O FRETE DE CAMINHÃO.',
+        forma: 'PIX',
+        pixType: 'CPF',
+        pixKey: '271.037.732-20'
+      }
+    };
+
     const campos = {
       recebedor: $$('recebedor'),
       docRecebedor: $$('docRecebedor'),
@@ -382,8 +422,10 @@
       forma: $$('forma'),
       numero: $$('numero'),
       obs: $$('obs'),
-      quantidadeDiarias: $$('quantidadeDiarias'),
-      logo: $$('logo') /* compatibility */
+      periodStart: $$('periodStart'),
+      periodEnd: $$('periodEnd'),
+      logo: $$('logo'),
+      preset: $$('preset')
     };
     const v = {
       recebedor: $$('vRecebedor'),
@@ -416,10 +458,19 @@
 
     setCurrencyMask(campos.valor); setDocMask(campos.docRecebedor); setDocMask(campos.docPagador);
 
-    function validateField(field, errorId, msg){ if(!field || !field.value || !field.value.toString().trim()){ if(field) field.classList.add('invalid'); if(errorId && $$(errorId)) { $$(errorId).style.display='block'; $$(errorId).textContent = msg || 'Obrigatório'; } return false; } if(field.id && field.id.includes('doc')){ const doc = field.value.replace(/\D/g,''); if(!(doc.length===11 || doc.length===14)){ field.classList.add('invalid'); if(errorId && $$(errorId)) { $$(errorId).style.display='block'; $$(errorId).textContent = 'Inválido'; } return false; } } if(field.id === 'valor'){ const val = parseFloat(field.value.replace(/\D/g,''))/100; if(isNaN(val) || val<0){ field.classList.add('invalid'); if(errorId && $$(errorId)){ $$(errorId).style.display='block'; $$(errorId).textContent='Inválido'; } return false; } } field.classList.remove('invalid'); if(errorId && $$(errorId)) $$(errorId).style.display='none'; return true; }
+    function validateField(field, errorId, msg){ if(!field || !field.value || !field.value.toString().trim()){ if(field) field.classList.add('invalid'); if(errorId && $$ (errorId)) { $$(errorId).style.display='block'; $$(errorId).textContent = msg || 'Obrigatório'; } return false; } if(field.id && field.id.includes('doc')){ const doc = field.value.replace(/\D/g,''); if(!(doc.length===11 || doc.length===14)){ field.classList.add('invalid'); if(errorId && $$ (errorId)) { $$(errorId).style.display='block'; $$(errorId).textContent = 'Inválido'; } return false; } } if(field.id === 'valor'){ const val = parseFloat(field.value.replace(/\D/g,''))/100; if(isNaN(val) || val<0){ field.classList.add('invalid'); if(errorId && $$ (errorId)){ $$(errorId).style.display='block'; $$(errorId).textContent='Inválido'; } return false; } } field.classList.remove('invalid'); if(errorId && $$ (errorId)) $$(errorId).style.display='none'; return true; }
 
-    function validateForm(){ let ok = true; if(!validateField(campos.recebedor,'recebedor-error')) ok=false; if(!validateField(campos.docRecebedor,'docRecebedor-error')) ok=false; if(!validateField(campos.pagador,'pagador-error')) ok=false; if(!validateField(campos.docPagador,'docPagador-error')) ok=false; if(!validateField(campos.descricao,'descricao-error')) ok=false; if(!validateField(campos.valor,'valor-error')) ok=false; if(!validateField(campos.cidade,'cidade-error')) ok=false; // quantidade de diarias required
-      if(!validateField(campos.quantidadeDiarias,'quantidadeDiarias-error')) ok=false;
+    function validateForm(){ let ok = true; if(!validateField(campos.recebedor,'recebedor-error')) ok=false; if(!validateField(campos.docRecebedor,'docRecebedor-error')) ok=false; if(!validateField(campos.pagador,'pagador-error')) ok=false; if(!validateField(campos.docPagador,'docPagador-error')) ok=false; if(!validateField(campos.descricao,'descricao-error')) ok=false; if(!validateField(campos.valor,'valor-error')) ok=false; if(!validateField(campos.cidade,'cidade-error')) ok=false;
+
+      // validar período trabalhado (start <= end)
+      const ps = campos.periodStart, pe = campos.periodEnd;
+      if(!ps || !ps.value){ if(ps) ps.classList.add('invalid'); $$('periodStart-error').style.display='block'; ok=false; } else { ps.classList.remove('invalid'); $$('periodStart-error').style.display='none'; }
+      if(!pe || !pe.value){ if(pe) pe.classList.add('invalid'); $$('periodEnd-error').style.display='block'; $$('periodEnd-error').textContent='Obrigatório'; ok=false; } else { pe.classList.remove('invalid'); $$('periodEnd-error').style.display='none'; }
+      if(ps && pe && ps.value && pe.value){
+        const d1 = parseDateInput(ps.value), d2 = parseDateInput(pe.value);
+        if(d1 > d2){ if(pe) pe.classList.add('invalid'); $$('periodEnd-error').style.display='block'; $$('periodEnd-error').textContent='Término anterior ao início'; ok=false; } else { if(pe) pe.classList.remove('invalid'); $$('periodEnd-error').style.display='none'; }
+      }
+
       const forma = (campos.forma && campos.forma.value) ? campos.forma.value : ''; if(forma === 'PIX'){
         if(!campos.pixKey || !campos.pixType) { ok=false; if(campos.pixKey && $$('pixKey-error')) $$('pixKey-error').style.display='block'; else if($$('pixKey-error')) $$('pixKey-error').style.display='block'; }
         else {
@@ -475,11 +526,20 @@
       v.dataTop.textContent = dataFmt;
       v.cidadeData.textContent = `${cidade}, ${dataFmt}`;
 
-      // quantidade de diárias
+      // período trabalhado: mostrar intervalo formatado e número de dias
       try{
-        const q = campos.quantidadeDiarias && campos.quantidadeDiarias.value ? Number(campos.quantidadeDiarias.value) : 0;
-        if(q && q>0){ v.periodo.textContent = `${q} ${q===1? 'diária' : 'diárias'}`; }
-        else { v.periodo.textContent = '—'; }
+        const psVal = campos.periodStart && campos.periodStart.value ? parseDateInput(campos.periodStart.value) : null;
+        const peVal = campos.periodEnd && campos.periodEnd.value ? parseDateInput(campos.periodEnd.value) : null;
+        if(psVal && peVal){
+          const t1 = formatDate(psVal);
+          const t2 = formatDate(peVal);
+          // calcular dias (incluir ambos os dias)
+          const diffMs = (peVal.setHours(0,0,0,0) - psVal.setHours(0,0,0,0));
+          const dias = Math.floor(diffMs / (1000*60*60*24)) + 1;
+          v.periodo.textContent = `De ${t1} a ${t2} (${dias} ${dias===1?'dia':'dias'})`;
+        } else if(psVal && !peVal){
+          v.periodo.textContent = `Início: ${formatDate(psVal)}`;
+        } else v.periodo.textContent = '—';
       }catch(e){ v.periodo.textContent = '—'; }
 
       // payment info
@@ -537,13 +597,23 @@
       const cidade = (campos.cidade && campos.cidade.value)?campos.cidade.value : 'Cidade/UF';
       const baseSeed = seed && seed.trim() ? seed.trim() : '';
 
+      // incluir período se disponível
+      let periodoTexto = '';
+      try{
+        if(campos.periodStart && campos.periodStart.value && campos.periodEnd && campos.periodEnd.value){
+          const ps = formatDate(parseDateInput(campos.periodStart.value));
+          const pe = formatDate(parseDateInput(campos.periodEnd.value));
+          periodoTexto = ` referente ao período de ${ps} a ${pe}`;
+        }
+      }catch(e){ periodoTexto = ''; }
+
       let text = '';
       if(template === 'freestyle'){
-        text = `${recebedor} declara ter recebido de ${pagador} a quantia de ${nf.format(vNum)} (${valorExt})${ baseSeed ? ' — ' + baseSeed : '' }.`;
+        text = `${recebedor} declara ter recebido de ${pagador} a quantia de ${nf.format(vNum)} (${valorExt})${ periodoTexto }${ baseSeed ? ' — ' + baseSeed : '' }.`;
       } else if(template === 'paragraph-writer'){
-        text = `Declaro para os devidos fins que ${recebedor} recebeu de ${pagador} o valor de ${nf.format(vNum)} (${valorExt}), referente a ${ baseSeed || 'serviços prestados' }. Pagamento efetuado em ${data}, na cidade de ${cidade}, por meio de ${forma}.`;
+        text = `Declaro para os devidos fins que ${recebedor} recebeu de ${pagador} o valor de ${nf.format(vNum)} (${valorExt}),${ periodoTexto || ' referente a serviços prestados' }. Pagamento efetuado em ${data}, na cidade de ${cidade}, por meio de ${forma}.`;
       } else {
-        text = `Pelo presente recibo, ${recebedor} recebe de ${pagador} a importância de ${nf.format(vNum)} (${valorExt}). O pagamento refere-se a ${ baseSeed || 'serviço ou produto acordado entre as partes' } e foi realizado em ${data}, em ${cidade}, mediante ${forma}. Fica o presente para comprovação do recebimento.`;
+        text = `Pelo presente recibo, ${recebedor} recebe de ${pagador} a importância de ${nf.format(vNum)} (${valorExt}). O pagamento${ periodoTexto || ' refere-se a serviço ou produto acordado entre as partes' } e foi realizado em ${data}, em ${cidade}, mediante ${forma}. Fica o presente para comprovação do recebimento.`;
       }
 
       if(tone === 'formal'){
@@ -580,11 +650,42 @@
       }catch(err){ console.error(err); showToast('Erro ao gerar descrição localmente'); }
     }
 
+    // === Aplicar cadastro rápido ===
+    function loadPreset(key){
+      const p = PRESETS[key];
+      if(!p) return;
+      try{
+        campos.recebedor.value = p.recebedor || '';
+        campos.docRecebedor.value = p.docRecebedor || '';
+        campos.descricao.value = p.descricao || '';
+        campos.forma.value = p.forma || 'PIX';
+
+        // Dispara exibição do grupo de pagamento
+        if(typeof window.onPaymentChange === 'function') window.onPaymentChange();
+
+        if(p.forma === 'PIX'){
+          if(campos.pixType) campos.pixType.value = (p.pixType || 'CPF');
+          if(campos.pixKey) campos.pixKey.value = p.pixKey || '';
+        }
+        if(p.forma === 'Transferência bancária'){
+          if(campos.bankName) campos.bankName.value = p.bankName || '';
+          if(campos.bankAgency) campos.bankAgency.value = p.bankAgency || '';
+          if(campos.bankAccount) campos.bankAccount.value = p.bankAccount || '';
+          if(campos.bankType) campos.bankType.value = p.bankType || 'Conta corrente';
+          if(campos.bankHolder) campos.bankHolder.value = p.bankHolder || '';
+        }
+
+        if(typeof window.onPaymentChange === 'function') window.onPaymentChange();
+        atualizarPreview(false);
+        showToast('Cadastro carregado');
+      }catch(e){ console.error(e); showToast('Não foi possível aplicar o cadastro'); }
+    }
+
     // init
     function init(){
       campos.data.valueAsDate = today; campos.numero.value = defaultNum(); campos.valor.value = nf.format(0);
 
-      // Set fixed values for Pagador, CNPJ and Cidade as requested
+      // Set fixed values for Pagador, CNPJ e Cidade
       try{
         if(campos.pagador){
           campos.pagador.value = 'C E Benetti';
@@ -602,48 +703,6 @@
           campos.cidade.dataset.fixed = 'true';
         }
       }catch(e){ console.warn('Erro ao setar campos fixos', e); }
-
-      // Presets para recebedor (seleção rápida)
-      try{
-        const recebedorPresets = [
-         
-        ];
-        const presetEl = document.getElementById('recebedorPreset');
-        if(presetEl){
-          presetEl.addEventListener('change', function(e){
-            const v = e.target.value;
-            if(v === '' ){
-              campos.recebedor.value='';
-              campos.docRecebedor.value='';
-              campos.recebedor.removeAttribute('readonly');
-              campos.docRecebedor.removeAttribute('readonly');
-              atualizarPreview(false);
-            }
-            else if(v === 'other'){
-              campos.recebedor.value='';
-              campos.docRecebedor.value='';
-              campos.recebedor.removeAttribute('readonly');
-              campos.docRecebedor.removeAttribute('readonly');
-              campos.recebedor.focus();
-              atualizarPreview(false);
-            }
-            else {
-              const sel = recebedorPresets[Number(v)];
-              if(sel){
-                campos.recebedor.value = sel.name;
-                campos.docRecebedor.value = sel.cpf;
-                try{ campos.docRecebedor.dispatchEvent(new Event('input')); }catch(e){}
-                campos.recebedor.setAttribute('readonly','true');
-                campos.docRecebedor.setAttribute('readonly','true');
-                atualizarPreview(false);
-              }
-            }
-          });
-
-          presetEl.value = '0';
-          presetEl.dispatchEvent(new Event('change'));
-        }
-      } catch(e){ console.warn('Erro ao configurar presets do recebedor', e); }
 
       const checkBtn = document.getElementById('checkSpelling'); if(checkBtn){ checkBtn.addEventListener('click', e=>{ e.preventDefault(); const el = campos.descricao; if(!el) return; el.spellcheck = false; setTimeout(()=>{ el.spellcheck = true; el.focus(); el.blur(); showToast('Verificação de ortografia ativada'); }, 60); }); }
 
@@ -741,8 +800,8 @@
 
       // buttons
       document.getElementById('gerar').addEventListener('click', e=>{ e.preventDefault(); atualizarPreview(true); });
-      const printToPdf = e=>{ e.preventDefault(); const el = document.getElementById('view'); const previewOnly = el.querySelectorAll('#clearSignatureInline, .modern-clear'); const prev = []; previewOnly.forEach((n,i)=>{ prev[i]=n.style.display; n.style.display='none'; }); // call gerarPDF (which will run validation and generate)
-        gerarPDF(); // restore after generation attempt (html2pdf runs async); we restore after a short delay to ensure controls back
+      const printToPdf = e=>{ e.preventDefault(); const el = document.getElementById('view'); const previewOnly = el.querySelectorAll('#clearSignatureInline, .modern-clear'); const prev = []; previewOnly.forEach((n,i)=>{ prev[i]=n.style.display; n.style.display='none'; }); // call gerarPDF
+        gerarPDF();
         setTimeout(()=>{ previewOnly.forEach((n,i)=>{ try{ n.style.display = prev[i] || ''; }catch(_){} }); }, 1500); };
       document.getElementById('imprimir').addEventListener('click', printToPdf);
 
@@ -781,6 +840,13 @@
 
       // inputs update preview live
       Object.values(campos).forEach(el=>{ if(el && el.type!=='file') el.addEventListener('input', ()=>atualizarPreview(false)); });
+
+      // Preset wiring
+      const applyBtn = document.getElementById('applyPreset');
+      if(campos.preset){
+        campos.preset.addEventListener('change', e=>{ if(e.target.value){ loadPreset(e.target.value); } });
+      }
+      if(applyBtn){ applyBtn.addEventListener('click', e=>{ e.preventDefault(); if(campos.preset && campos.preset.value) loadPreset(campos.preset.value); }); }
 
       // initial preview
       const initial = campos.data.value ? parseDateInput(campos.data.value) : today;
