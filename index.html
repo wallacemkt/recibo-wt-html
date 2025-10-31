@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Gerador de Recibos | Estilo Moderno (Atualizado)</title>
+  <title>Gerador de Recibos</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
   <style>
@@ -154,6 +154,22 @@
       <section class="card form" aria-label="Formulário de Recibo">
         <div class="h"><h2><i class="fas fa-edit"></i> Dados</h2></div>
         <div class="b">
+
+          <!-- Cadastros rápidos (NOVO) -->
+          <div class="row row-2" style="margin-bottom:12px">
+            <div class="form-group">
+              <label>Cadastros rápidos</label>
+              <select id="preset" aria-label="Selecionar cadastro salvo">
+                <option value="">Selecionar cadastro…</option>
+                <option value="sebastiao">Sebastião Natalino Pereira Teixeira — CPF 301.821.312-20</option>
+                <option value="daniel">Daniel da Silva — CPF 271.037.732-20</option>
+              </select>
+            </div>
+            <div class="form-group" style="align-self:end">
+              <button type="button" id="applyPreset" class="ghost" style="width:100%"><i class="fas fa-user-check"></i> Aplicar cadastro</button>
+            </div>
+          </div>
+
           <div class="row row-2">
             <div class="form-group">
               <label class="required">Recebedor</label>
@@ -371,40 +387,64 @@
 
     const defaultNum = () => { const n = new Date(); return `REC${n.getFullYear()}${pad(n.getMonth()+1)}${pad(n.getDate())}-${Math.floor(Math.random()*90000)+10000}`; };
 
+    // === CADASTROS RÁPIDOS (NOVO) ===
+    const PRESETS = {
+      sebastiao: {
+        recebedor: 'Sebastião Natalino Pereira Teixeira',
+        docRecebedor: '301.821.312-20',
+        descricao: 'SERVIÇOS DIVERSOS',
+        forma: 'Transferência bancária',
+        bankName: 'CAIXA ECONÔMICA',
+        bankAgency: '0820',
+        bankAccount: '000776783292-0',
+        bankType: 'Poupança',
+        bankHolder: 'Sebastião Natalino Pereira Teixeira'
+      },
+      daniel: {
+        recebedor: 'DANIEL DA SILVA',
+        docRecebedor: '271.037.732-20',
+        descricao: 'REFERENTE A O FRETE DE CAMINHÃO.',
+        forma: 'PIX',
+        pixType: 'CPF',
+        pixKey: '271.037.732-20'
+      }
+    };
+
     const campos = {
-      recebedor: $$('recebedor'),
-      docRecebedor: $$('docRecebedor'),
-      pagador: $$('pagador'),
-      docPagador: $$('docPagador'),
-      descricao: $$('descricao'),
-      valor: $$('valor'),
-      data: $$('data'),
-      cidade: $$('cidade'),
-      forma: $$('forma'),
-      numero: $$('numero'),
-      obs: $$('obs'),
-      periodStart: $$('periodStart'),
-      periodEnd: $$('periodEnd'),
-      logo: $$('logo') /* compatibility */
+      recebedor: $$('#recebedor'),
+      docRecebedor: $$('#docRecebedor'),
+      pagador: $$('#pagador'),
+      docPagador: $$('#docPagador'),
+      descricao: $$('#descricao'),
+      valor: $$('#valor'),
+      data: $$('#data'),
+      cidade: $$('#cidade'),
+      forma: $$('#forma'),
+      numero: $$('#numero'),
+      obs: $$('#obs'),
+      periodStart: $$('#periodStart'),
+      periodEnd: $$('#periodEnd'),
+      logo: $$('#logo'),
+      preset: $$('#preset')
     };
     const v = {
-      recebedor: $$('vRecebedor'),
-      docRecebedor: $$('vDocRecebedor'),
-      recebedor2: $$('vRecebedor2'),
-      pagador: $$('vPagador'),
-      docPagador: $$('vDocPagador'),
-      valor: $$('vValor'),
-      valor2: $$('vValor2'),
-      extenso: $$('vExtenso'),
-      descricao: $$('vDescricao'),
-      forma: $$('vForma'),
-      obs: $$('vObs'),
-      numero: $$('vNumero'),
-      dataTop: $$('vDataTop'),
-      cidadeData: $$('vCidadeData'),
-      logoPreview: $$('logoPreview'),
-      paymentInfo: $$('vPaymentInfo'),
-      periodo: $$('vPeriodo')
+      recebedor: $$('#vRecebedor'),
+      docRecebedor: $$('#vDocRecebedor'),
+      recebedor2: $$('#vRecebedor2'),
+      pagador: $$('#vPagador'),
+      docPagador: $$('#vDocPagador'),
+      valor: $$('#vValor'),
+      valor2: $$('#vValor2'),
+      extenso: $$('#vExtenso'),
+      descricao: $$('#vDescricao'),
+      forma: $$('#vForma'),
+      obs: $$('#vObs'),
+      numero: $$('#vNumero'),
+      dataTop: $$('#vDataTop'),
+      cidadeData: $$('#vCidadeData'),
+      logoPreview: $$('#logoPreview'),
+      paymentInfo: $$('#vPaymentInfo'),
+      periodo: $$('#vPeriodo')
     };
     const nf = new Intl.NumberFormat('pt-BR',{style:'currency',currency:'BRL'});
 
@@ -424,36 +464,36 @@
 
       // validar período trabalhado (start <= end)
       const ps = campos.periodStart, pe = campos.periodEnd;
-      if(!ps || !ps.value){ if(ps) ps.classList.add('invalid'); $$('periodStart-error').style.display='block'; ok=false; } else { ps.classList.remove('invalid'); $$('periodStart-error').style.display='none'; }
-      if(!pe || !pe.value){ if(pe) pe.classList.add('invalid'); $$('periodEnd-error').style.display='block'; $$('periodEnd-error').textContent='Obrigatório'; ok=false; } else { pe.classList.remove('invalid'); $$('periodEnd-error').style.display='none'; }
+      if(!ps || !ps.value){ if(ps) ps.classList.add('invalid'); $$('#periodStart-error').style.display='block'; ok=false; } else { ps.classList.remove('invalid'); $$('#periodStart-error').style.display='none'; }
+      if(!pe || !pe.value){ if(pe) pe.classList.add('invalid'); $$('#periodEnd-error').style.display='block'; $$('#periodEnd-error').textContent='Obrigatório'; ok=false; } else { pe.classList.remove('invalid'); $$('#periodEnd-error').style.display='none'; }
       if(ps && pe && ps.value && pe.value){
         const d1 = parseDateInput(ps.value), d2 = parseDateInput(pe.value);
-        if(d1 > d2){ if(pe) pe.classList.add('invalid'); $$('periodEnd-error').style.display='block'; $$('periodEnd-error').textContent='Término anterior ao início'; ok=false; } else { if(pe) pe.classList.remove('invalid'); $$('periodEnd-error').style.display='none'; }
+        if(d1 > d2){ if(pe) pe.classList.add('invalid'); $$('#periodEnd-error').style.display='block'; $$('#periodEnd-error').textContent='Término anterior ao início'; ok=false; } else { if(pe) pe.classList.remove('invalid'); $$('#periodEnd-error').style.display='none'; }
       }
 
       const forma = (campos.forma && campos.forma.value) ? campos.forma.value : ''; if(forma === 'PIX'){
-        if(!campos.pixKey || !campos.pixType) { ok=false; if(campos.pixKey && $$('pixKey-error')) $$('pixKey-error').style.display='block'; else if($$('pixKey-error')) $$('pixKey-error').style.display='block'; }
+        if(!campos.pixKey || !campos.pixType) { ok=false; if(campos.pixKey && $$('#pixKey-error')) $$('#pixKey-error').style.display='block'; else if($$('#pixKey-error')) $$('#pixKey-error').style.display='block'; }
         else {
           const type = (campos.pixType.value||'').toUpperCase();
           const raw = (campos.pixKey.value||'').replace(/\s+/g,'');
           if(type === 'CPF'){
             const digits = raw.replace(/\D/g,'');
-            if(digits.length !== 11){ campos.pixKey.classList.add('invalid'); $$('pixKey-error').style.display='block'; $$('pixKey-error').textContent='CPF inválido (11 dígitos)'; ok=false; }
-            else { campos.pixKey.classList.remove('invalid'); $$('pixKey-error').style.display='none'; }
+            if(digits.length !== 11){ campos.pixKey.classList.add('invalid'); $$('#pixKey-error').style.display='block'; $$('#pixKey-error').textContent='CPF inválido (11 dígitos)'; ok=false; }
+            else { campos.pixKey.classList.remove('invalid'); $$('#pixKey-error').style.display='none'; }
           } else if(type === 'CNPJ'){
             const digits = raw.replace(/\D/g,'');
-            if(digits.length !== 14){ campos.pixKey.classList.add('invalid'); $$('pixKey-error').style.display='block'; $$('pixKey-error').textContent='CNPJ inválido (14 dígitos)'; ok=false; }
-            else { campos.pixKey.classList.remove('invalid'); $$('pixKey-error').style.display='none'; }
+            if(digits.length !== 14){ campos.pixKey.classList.add('invalid'); $$('#pixKey-error').style.display='block'; $$('#pixKey-error').textContent='CNPJ inválido (14 dígitos)'; ok=false; }
+            else { campos.pixKey.classList.remove('invalid'); $$('#pixKey-error').style.display='none'; }
           } else if(type === 'CELULAR'){
             const digits = raw.replace(/\D/g,'');
-            if(digits.length < 10){ campos.pixKey.classList.add('invalid'); $$('pixKey-error').style.display='block'; $$('pixKey-error').textContent='Número inválido'; ok=false; }
-            else { campos.pixKey.classList.remove('invalid'); $$('pixKey-error').style.display='none'; }
+            if(digits.length < 10){ campos.pixKey.classList.add('invalid'); $$('#pixKey-error').style.display='block'; $$('#pixKey-error').textContent='Número inválido'; ok=false; }
+            else { campos.pixKey.classList.remove('invalid'); $$('#pixKey-error').style.display='none'; }
           } else if(type === 'EMAIL'){
             const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-            if(!re.test(campos.pixKey.value.trim())){ campos.pixKey.classList.add('invalid'); $$('pixKey-error').style.display='block'; $$('pixKey-error').textContent='Email inválido'; ok=false; }
-            else { campos.pixKey.classList.remove('invalid'); $$('pixKey-error').style.display='none'; }
+            if(!re.test(campos.pixKey.value.trim())){ campos.pixKey.classList.add('invalid'); $$('#pixKey-error').style.display='block'; $$('#pixKey-error').textContent='Email inválido'; ok=false; }
+            else { campos.pixKey.classList.remove('invalid'); $$('#pixKey-error').style.display='none'; }
           } else {
-            if(!campos.pixKey.value.trim()){ campos.pixKey.classList.add('invalid'); $$('pixKey-error').style.display='block'; ok=false; }
+            if(!campos.pixKey.value.trim()){ campos.pixKey.classList.add('invalid'); $$('#pixKey-error').style.display='block'; ok=false; }
           }
         }
       } else if(forma === 'Transferência bancária' ){
@@ -462,7 +502,7 @@
         if(!campos.bankAccount || !validateField(campos.bankAccount,'bankAccount-error')) ok=false;
       } return ok; }
 
-    function showToast(msg,d=3000){ const t = $$('toast'); $$('toast-message').textContent = msg; t.classList.add('show'); setTimeout(()=>t.classList.remove('show'),d); }
+    function showToast(msg,d=3000){ const t = $$('#toast'); $$('#toast-message').textContent = msg; t.classList.add('show'); setTimeout(()=>t.classList.remove('show'),d); }
 
     // extenso functions kept
     function numeroPorExtenso(n){ const u=["zero","um","dois","três","quatro","cinco","seis","sete","oito","nove","dez","onze","doze","treze","quatorze","quinze","dezesseis","dezessete","dezoito","dezenove"]; const d=["","","vinte","trinta","quarenta","cinquenta","sessenta","setenta","oitenta","noventa"]; const c=["","cento","duzentos","trezentos","quatrocentos","quinhentos","seiscentos","setecentos","oitocentos","novecentos"]; if(n===0) return u[0]; function grupo(nm){ if(nm===0) return ""; const C=Math.floor(nm/100), D=Math.floor((nm%100)/10), U=nm%10; let t=""; if(C>0){ if(C===1 && D===0 && U===0) t="cem"; else t=c[C]; } if(D>0){ if(t) t+=" e "; if(D===1) t+=u[10+U]; else{ t+=d[D]; if(U>0) t+=" e "+u[U]; } } else if(U>0){ if(t) t+=" e "; t+=u[U]; } return t; } const bil = Math.floor(n/1000000000), mil = Math.floor((n%1000000000)/1000000), milh = Math.floor((n%1000000)/1000), uni = n%1000; let txt=""; if(bil>0) txt+=grupo(bil)+(bil===1?" bilhão":" bilhões"); if(mil>0) txt+=(txt?", ":"")+grupo(mil)+(mil===1?" milhão":" milhões"); if(milh>0) txt+=(txt?", ":"")+(milh===1?"mil":grupo(milh)+" mil"); if(uni>0) txt+=(txt?", ":"")+grupo(uni); return txt; }
@@ -610,11 +650,42 @@
       }catch(err){ console.error(err); showToast('Erro ao gerar descrição localmente'); }
     }
 
+    // === Aplicar cadastro rápido ===
+    function loadPreset(key){
+      const p = PRESETS[key];
+      if(!p) return;
+      try{
+        campos.recebedor.value = p.recebedor || '';
+        campos.docRecebedor.value = p.docRecebedor || '';
+        campos.descricao.value = p.descricao || '';
+        campos.forma.value = p.forma || 'PIX';
+
+        // Dispara exibição do grupo de pagamento
+        if(typeof window.onPaymentChange === 'function') window.onPaymentChange();
+
+        if(p.forma === 'PIX'){
+          if(campos.pixType) campos.pixType.value = (p.pixType || 'CPF');
+          if(campos.pixKey) campos.pixKey.value = p.pixKey || '';
+        }
+        if(p.forma === 'Transferência bancária'){
+          if(campos.bankName) campos.bankName.value = p.bankName || '';
+          if(campos.bankAgency) campos.bankAgency.value = p.bankAgency || '';
+          if(campos.bankAccount) campos.bankAccount.value = p.bankAccount || '';
+          if(campos.bankType) campos.bankType.value = p.bankType || 'Conta corrente';
+          if(campos.bankHolder) campos.bankHolder.value = p.bankHolder || '';
+        }
+
+        if(typeof window.onPaymentChange === 'function') window.onPaymentChange();
+        atualizarPreview(false);
+        showToast('Cadastro carregado');
+      }catch(e){ console.error(e); showToast('Não foi possível aplicar o cadastro'); }
+    }
+
     // init
     function init(){
       campos.data.valueAsDate = today; campos.numero.value = defaultNum(); campos.valor.value = nf.format(0);
 
-      // Set fixed values for Pagador, CNPJ and Cidade as requested
+      // Set fixed values for Pagador, CNPJ e Cidade
       try{
         if(campos.pagador){
           campos.pagador.value = 'C E Benetti';
@@ -729,8 +800,8 @@
 
       // buttons
       document.getElementById('gerar').addEventListener('click', e=>{ e.preventDefault(); atualizarPreview(true); });
-      const printToPdf = e=>{ e.preventDefault(); const el = document.getElementById('view'); const previewOnly = el.querySelectorAll('#clearSignatureInline, .modern-clear'); const prev = []; previewOnly.forEach((n,i)=>{ prev[i]=n.style.display; n.style.display='none'; }); // call gerarPDF (which will run validation and generate)
-        gerarPDF(); // restore after generation attempt (html2pdf runs async); we restore after a short delay to ensure controls back
+      const printToPdf = e=>{ e.preventDefault(); const el = document.getElementById('view'); const previewOnly = el.querySelectorAll('#clearSignatureInline, .modern-clear'); const prev = []; previewOnly.forEach((n,i)=>{ prev[i]=n.style.display; n.style.display='none'; }); // call gerarPDF
+        gerarPDF();
         setTimeout(()=>{ previewOnly.forEach((n,i)=>{ try{ n.style.display = prev[i] || ''; }catch(_){} }); }, 1500); };
       document.getElementById('imprimir').addEventListener('click', printToPdf);
 
@@ -769,6 +840,13 @@
 
       // inputs update preview live
       Object.values(campos).forEach(el=>{ if(el && el.type!=='file') el.addEventListener('input', ()=>atualizarPreview(false)); });
+
+      // Preset wiring
+      const applyBtn = document.getElementById('applyPreset');
+      if(campos.preset){
+        campos.preset.addEventListener('change', e=>{ if(e.target.value){ loadPreset(e.target.value); } });
+      }
+      if(applyBtn){ applyBtn.addEventListener('click', e=>{ e.preventDefault(); if(campos.preset && campos.preset.value) loadPreset(campos.preset.value); }); }
 
       // initial preview
       const initial = campos.data.value ? parseDateInput(campos.data.value) : today;
