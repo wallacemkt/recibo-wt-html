@@ -183,12 +183,12 @@
             </div>
             <div class="form-group">
               <label class="required">Pagador</label>
-              <input id="pagador" placeholder="Nome do pagador" readonly data-fixed="true" />
+              <input id="pagador" placeholder="Nome do pagador"  />
               <div class="error-message" id="pagador-error">Obrigatório</div>
             </div>
             <div class="form-group">
               <label class="required">CPF/CNPJ</label>
-              <input id="docPagador" placeholder="000.000.000-00" readonly data-fixed="true" />
+              <input id="docPagador" placeholder="000.000.000-00" -fixed="true" />
               <div class="error-message" id="docPagador-error">Inválido</div>
             </div>
           </div>
@@ -688,7 +688,8 @@
       // Set fixed values for Pagador, CNPJ e Cidade
       try{
         if(campos.pagador){
-          campos.pagador.value = 'C E Benetti';
+          campos.pagador.value = 'C E Benetti';campos.pagador.removeAttribute('readonly');
+        if (campos.pagador.dataset) delete campos.pagador.dataset.fixed;
           campos.pagador.setAttribute('readonly','true');
           campos.pagador.dataset.fixed = 'true';
         }
@@ -737,7 +738,8 @@
             <div class="error-message" id="bankAgency-error">Obrigatório</div>
             <label class="required" style="margin-top:8px">Conta</label>
             <input id="bankAccount" placeholder="000000-0" />
-            <div class="error-message" id="bankAccount-error">Obrigatório</div>
+           campos.cidade.removeAttribute('readonly');
+            <input id="docPagador" placeholder="000.000.000-00" />            if (campos.cidade.dataset) delete campos.cidade.dataset.fixed; <div class="error-message" id="bankAccount-error">Obrigatório</div>
             <label style="margin-top:8px">Tipo de conta</label>
             <select id="bankType">
               <option value="Conta corrente">Conta corrente</option>
